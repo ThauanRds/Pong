@@ -5,12 +5,20 @@ using DG.Tweening;
 
 public class Ball : MonoBehaviour
 {
-    public GameObject explosion;
-    public float speed;
+    [Header("Components")]
     public TrailRenderer trail;
-
+    public SpriteRenderer sprite;
     private Rigidbody2D rb;
-    public  SpriteRenderer sprite;
+
+    [Header("Audios")]
+    public AudioSource audioSource;
+    public AudioClip ballSFX;
+    public AudioClip explosionSFX;
+    public AudioClip gameOver;
+
+    [Header("Object Settings")]
+    public float speed;
+    public GameObject explosion;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +30,8 @@ public class Ball : MonoBehaviour
     // Controla o arremesso inicial dabola
     void Launch()
     {
+        audioSource.PlayOneShot(ballSFX);
+
         Vector2 direction = Vector2.zero;
 
         // Vai para a esquerda
@@ -42,6 +52,7 @@ public class Ball : MonoBehaviour
 
     public void ResetBall()
     {
+        PlayExplode();
         GameObject exp = Instantiate(explosion, transform.position, transform.rotation);
         Destroy(exp, 2f);
 
@@ -88,6 +99,7 @@ public class Ball : MonoBehaviour
 
     void BallJuice()
     {
+        audioSource.PlayOneShot(ballSFX);
         // Limpando o DOTween para evitar conflitos de animação
         sprite.transform.DOKill();
         sprite.transform.localScale = Vector3.one;
@@ -102,5 +114,11 @@ public class Ball : MonoBehaviour
             false, // Não mudar o eixo z
             true // Fade out
             );
+    }
+
+    void PlayExplode()
+    {
+        audioSource.PlayOneShot(explosionSFX);
+        audioSource.PlayOneShot(gameOver);
     }
 }

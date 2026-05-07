@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI playerScoreText;
     public TextMeshProUGUI AIScoreText;
+
+    [Header("Audios")]
+    public AudioSource audioSource;
+    public AudioClip scoreSFX;
     
     public void PlayerPoint()
     {
@@ -30,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     void JuiceText(TextMeshProUGUI text)
     {
+        audioSource.PlayOneShot(scoreSFX);
+
         text.transform.DOKill();
         text.transform.localScale = Vector3.one;
         text.transform.DOScale(1.5f, 0.5f).SetLoops(2, LoopType.Yoyo);
